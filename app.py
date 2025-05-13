@@ -19,8 +19,22 @@ def text_to_html(text_file):
         returned_paragraphs+= f'<p>{i}</p>'
     return returned_paragraphs
 
-@app.route('/')
+# @app.route('/login')
+# def login():
+#     return 'This page is create to sign in and sign up'
+
+
+@app.route('/', method = ["GET","POST"])
 def homepage():
+# method = GET and POST. GET because of requesting the homepage itself, POST to enter values for processing in backend
+# If statment is for check that the method used is post, that means we will enter new values and the web server will convey it for backend.
+# flask.request.method() to call the method type.
+    if flask.request.method == "POST":
+        password = flask.request.form["password"]
+        username = flask.request.form["username"]
+        
+        
+
     return get_html('index.html')
 
 @app.route('/update')
