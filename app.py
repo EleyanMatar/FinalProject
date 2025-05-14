@@ -1,30 +1,38 @@
 import flask 
 app = flask.Flask('Surveying')
 
-def get_html(html_file):
+# read text and html files
+def get_html_text(html_file):
     file = open(html_file)
     content = file.read()
     file.close()
     return content
 
-def read_text(text_file):
-    file = get_html(text_file)
+# read text file and split it to return a list, processing before converting to html paragraphs
+def read_split_text_to_list(text_file):
+    file = get_html_text(text_file)
     content = file.split('\n')
     return content
 
+# turn text into html
 def text_to_html(text_file):
-    file = read_text(text_file)
+    file = read_split_text_to_list(text_file)
     returned_paragraphs = ''
     for i in file:
         returned_paragraphs+= f'<p>{i}</p>'
     return returned_paragraphs
 
-# @app.route('/login')
-# def login():
-#     return 'This page is create to sign in and sign up'
+# read users file, which contains the usernames and password
+def open_users_file(users_file):
+    users = {}
+    users_file = read_split_text_to_list()
+    for user in users_file:
+        username, password = user.split(":")
+        users[username] = password
+    return users
 
-
-@app.route('/', method = ["GET","POST"])
+#homepage, give a brief of the webapp and give him the option to sign in or sign up, then redirect the user for /action route
+@app.route('/', methods = ["GET","POST"])
 def homepage():
 # method = GET and POST. GET because of requesting the homepage itself, POST to enter values for processing in backend
 # If statment is for check that the method used is post, that means we will enter new values and the web server will convey it for backend.
@@ -32,10 +40,25 @@ def homepage():
     if flask.request.method == "POST":
         password = flask.request.form["password"]
         username = flask.request.form["username"]
+        users = open_users_file("username.txt")
+#Session, We use it because each request work individually without connected with each other, so the appropriate way to redirect to action route is to make sure that the user sign in successfully.
+        if (username in users.keys()):
+            if users[username]==password:
+                flask.session['username'] = username
+                return flask.redirect('/actions')
+            else:
+                return "Wrong password. Try again."
+        else:
+            return "Wrong username. try again, or press sign up if it is your first time.."
         
-        
+@app.route('/signup', methods = "POST")
+def signup():
+    
 
-    return get_html('index.html')
+@app.route('/actions')
+def actions():
+    if "username" in flask.session:
+        return "This page will show the services we offer"
 
 @app.route('/update')
 def update():

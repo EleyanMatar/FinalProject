@@ -1,1 +1,2 @@
-{"eleyan":"1234"}
+eleyan:1234
+hani:5678
