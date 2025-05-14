@@ -1,6 +1,30 @@
 import flask 
 app = flask.Flask('Surveying')
 
+# create class for new account:
+class account:
+    def __init__(self,id,first_name,last_name,username,password,email_address):
+        self.id = id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.username = username
+        self.password = password
+        self.email_address = email_address
+
+    def change_email_address(self,new_email_address):
+        self.email_address = new_email_address
+    
+    def change_password(self,new_password):
+        self.password = new_password
+
+    def to_text(self):
+        return f"{self.id}:{self.first_name}:{self.last_name}:{self.username}:{self.password}:{self.email_address}"
+
+    def save_to_file(self, file_name='username.txt'):
+        with open(file_name, 'a') as file:
+            file.write(self.to_text() + '\n')
+
+
 # read text and html files
 def get_html_text(html_file):
     file = open(html_file)
@@ -53,7 +77,7 @@ def homepage():
         
 @app.route('/signup', methods = "POST")
 def signup():
-    
+
 
 @app.route('/actions')
 def actions():
