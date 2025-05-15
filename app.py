@@ -74,21 +74,24 @@ def homepage():
 # If statment is for check that the method used is post, that means we will enter new values and the web server will convey it for backend.
 # flask.request.method() to call the method type.
     if flask.request.method == "POST":
-        password = flask.request.form["password"]
-        username = flask.request.form["username"].lower()
-        users = open_users_file("username.txt")
-#Session, We use it because each request work individually without connected with each other, so the appropriate way to redirect to action route is to make sure that the user sign in successfully.
-        for i in users:
-            if i['username'] == username:
-                if i['password'] == password:
-                    flask.session['username'] = username
-                    return flask.redirect('/actions')
-                else:
-                    return flask.render_template("index.html", message="Wrong password. Try again.")
-        return flask.render_template("index.html", message="Wrong username. Try again.")
+        if "sign_up" in flask.request.form:
+            return flask.redirect('/signup')
+        elif "sign_in" in flask.request.form:
+            password = flask.request.form["password"]
+            username = flask.request.form["username"].lower()
+            users = open_users_file("username.txt")
+    #Session, We use it because each request work individually without connected with each other, so the appropriate way to redirect to action route is to make sure that the user sign in successfully.
+            for i in users:
+                if i['username'] == username:
+                    if i['password'] == password:
+                        flask.session['username'] = username
+                        return flask.redirect('/actions')
+                    else:
+                        return flask.render_template("index.html", message="Wrong password. Try again.")
+            return flask.render_template("index.html", message="Wrong username. Try again.")
 
     return flask.render_template("index.html")
-                
+                    
         
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
