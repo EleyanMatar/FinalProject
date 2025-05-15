@@ -119,19 +119,29 @@ def signup():
 
 
 
-@app.route('/actions')
+@app.route('/actions', methods=['GET', 'POST'])
 def actions():
-    if "username" in flask.session:
-        return "This page will show the services we offer"
+    if "username" not in flask.session:
+        return flask.redirect('/')
+    
+    if flask.request.method == 'POST':
+        if 'add_survey' in flask.request.form:
+            return flask.redirect('/add_survey')
+        elif 'show_survey' in flask.request.form:
+            return flask.redirect('/show_survey')
+        
+    return flask.render_template('actions.html')
+
+    
 
 @app.route('/update')
 def update():
     return 'this page is for update'
 
-@app.route('/view')
+@app.route('/show_survey')
 def view():
     return 'this page to view'
 
-@app.route('/add')
+@app.route('/add_survey')
 def add():
     return 'this page to add new survey'
