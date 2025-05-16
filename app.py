@@ -1,4 +1,16 @@
 import flask 
+import pandas as pd
+import random
+
+# read dataset from excel file and store it inside DataFrame, generate unique id for each record 
+records = pd.read_excel('Records.xlsx')
+ids = []
+while len(ids)<records.shape[0]:
+    ids.append(random.randint(100000000,999999999))
+    ids = list(set(ids))
+records['id'] = ids
+
+
 app = flask.Flask('Surveying')
 # flask.session will not work without secret_key()
 app.secret_key = "#secret_key@2025"
@@ -87,10 +99,10 @@ def homepage():
                         flask.session['username'] = username
                         return flask.redirect('/actions')
                     else:
-                        return flask.render_template("index.html", message="Wrong password. Try again.")
-            return flask.render_template("index.html", message="Wrong username. Try again.")
+                        return get_html_text('index.html').replace('$replace$',"Wrong password. Try again.")
+            return get_html_text('index.html').replace('$replace$',"Wrong username. Try again.")
 
-    return flask.render_template("index.html")
+    return get_html_text('index.html').replace('$replace$',"")
                     
         
 @app.route('/signup', methods=['GET', 'POST'])
@@ -107,19 +119,18 @@ def signup():
 
         for user in users:
             if user['id'] == id:
-                return flask.render_template("signup.html", message="This ID already exists. Try again.")
+                return get_html_text("signup.html").replace('$replace$',"This ID already exists. Try again.")
             if user['username'] == username:
-                return flask.render_template("signup.html", message="This username is already taken. Try again.")
+                return get_html_text("signup.html").replace('$replace$',"This username is already taken. Try again.")
             if user['email_address'] == email_address:
-                return flask.render_template("signup.html", message="This email is already registered. Try again.")
+                return get_html_text("signup.html").replace('$replace$',"This email is already registered. Try again.")
 
         
 
         account(id,first_name,last_name,username,password,email_address).save_to_file()
-        return "Account created successfully! <a href='/'>Go to login</a>"
+        return get_html_text("signup.html").replace('$replace$',"Account created successfully! <a href='/'>Go to login</a>")
     
-    return flask.render_template('signup.html')
-
+    return get_html_text("signup.html").replace('$replace$',"")
 
 
 @app.route('/actions', methods=['GET', 'POST'])
@@ -135,16 +146,22 @@ def actions():
         
     return flask.render_template('actions.html')
 
-    
-
+@app.route('/show_survey', methods = ["GET","POST"])
+def show_survey():
+    if flask.request.method == "POST":
+        id = flask.request.form['id']
+        get_from_data = records[records['id'] == id]
+        if get_from_data.empty:
+            return get_html_text('show_survey.html').replace('$replace$','No survey found for this ID.')
+        else :
+            return get_html_text('show_survey.html').replace('$replace$', get_from_data.to_html(index=False))
+        
+    return get_html_text('show_survey.html').replace('$replace$', '')
+            
 @app.route('/update')
 def update():
     return 'this page is for update'
 
-@app.route('/show_survey')
-def view():
-    return 'this page to view'
-
 @app.route('/add_survey')
-def add():
+def add_survey():
     return 'this page to add new survey'
