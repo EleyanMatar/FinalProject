@@ -144,9 +144,9 @@ def show_survey():
             else :
                 return get_html_text('templates/show_survey.html').replace('$replace$', get_from_data.to_html(index=False))
         elif 'delete' in flask.request.form:
-            get_from_data.drop(index=get_from_data.index,inplace=True)
-            get_from_data.to_excel('Records.xlsx')
-            
+            records.drop(index=get_from_data.index,inplace=True)
+            records.to_excel('Records.xlsx')
+            return get_html_text('templates/show_survey.html').replace('$replace$', 'The survey has been deleted successfully!')
     return get_html_text('templates/show_survey.html').replace('$replace$', '')
             
 @app.route('/update_survey', methods = ['GET','POST'])
@@ -177,6 +177,8 @@ def add_survey():
         new_record = {}
         for i in records.columns:
             new_record[i] = flask.request.form[i]
+        
+        new_record['id'] = int(new_record['id'])
         if new_record['id'] not in records['id'].values:
             new_record = pd.DataFrame([new_record])
             records = pd.concat([records, new_record],ignore_index=True)
