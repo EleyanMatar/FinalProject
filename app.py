@@ -3,7 +3,7 @@ import pandas as pd
 app = flask.Flask('Surveying')
 # flask.session will not work without secret_key()
 app.secret_key = "#secret_key@2025"
-records = pd.read_excel('Records.xlsx')
+records = pd.read_excel('Records.xlsx',index_col=0)
 # create class for new account:
 class account:
     def __init__(self,id,first_name,last_name,username,password,email_address):
@@ -138,11 +138,15 @@ def show_survey():
     if flask.request.method == "POST":
         id = int(flask.request.form["id"])
         get_from_data = records[records['id'] == id]
-        if get_from_data.empty:
-            return get_html_text('templates/show_survey.html').replace('$replace$','No survey found for this ID.')
-        else :
-            return get_html_text('templates/show_survey.html').replace('$replace$', get_from_data.to_html(index=False))
-        
+        if 'search' in flask.request.form:
+            if get_from_data.empty:
+                return get_html_text('templates/show_survey.html').replace('$replace$','No survey found for this ID.')
+            else :
+                return get_html_text('templates/show_survey.html').replace('$replace$', get_from_data.to_html(index=False))
+        elif 'delete' in flask.request.form:
+            get_from_data.drop(index=get_from_data.index,inplace=True)
+            get_from_data.to_excel('Records.xlsx')
+            
     return get_html_text('templates/show_survey.html').replace('$replace$', '')
             
 @app.route('/update_survey', methods = ['GET','POST'])
@@ -160,9 +164,25 @@ def update_survey():
         else:
             records.loc[records[records['id'] == id].index,property] = new_change
             records.to_excel('Records.xlsx')
-            return get_html_text('templates/update.html').replace('$replace$',options).replace('$replace2$',"This survey has been updated successfully! <a href='/show_survey'>Go check the update..</a>")
+            return get_html_text('templates/update.html').replace('$replace$',options).replace('$replace2$',"The survey has been updated successfully! <a href='/show_survey'>Go check the update..</a>")
     return get_html_text('templates/update.html').replace('$replace$',options).replace('$replace2$',"")
 
-@app.route('/add_survey')
+@app.route('/add_survey', methods = ['GET','POST'])
 def add_survey():
-    return 'this page to add new survey'
+    global records # we want to assign new value and this value will override the old one. if i do not identify records as global, the function will create a new variable inside the function only.
+    record_properties = ''
+    for i in records.columns:
+        record_properties+=f'<label for="{i}">{i}: </label><input type="text" name="{i}" placeholder="Enter value.."><br><br>'
+    if flask.request.method == "POST":
+        new_record = {}
+        for i in records.columns:
+            new_record[i] = flask.request.form[i]
+        if new_record['id'] not in records['id'].values:
+            new_record = pd.DataFrame([new_record])
+            records = pd.concat([records, new_record],ignore_index=True)
+            records.to_excel('Records.xlsx')
+            return get_html_text('templates/add_survey.html').replace('$replace$',record_properties).replace('$replace2$',"The survey has been added successfully! <a href='/show_survey'>Go check it..</a>")
+        else:
+            return get_html_text('templates/add_survey.html').replace('$replace$',record_properties).replace('$replace2$',"This ID already exists! <a href='/show_survey'>Go check it..</a>")
+
+    return get_html_text('templates/add_survey.html').replace('$replace$',record_properties).replace('$replace2$',"")
