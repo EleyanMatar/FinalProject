@@ -1,21 +1,9 @@
 import flask 
 import pandas as pd
-import random
-
-# read dataset from excel file and store it inside DataFrame, generate unique id for each record 
-records = pd.read_excel('Records.xlsx')
-ids = []
-while len(ids)<records.shape[0]:
-    ids.append(random.randint(100000000,999999999))
-    ids = list(set(ids))
-records['id'] = ids
-
-
 app = flask.Flask('Surveying')
 # flask.session will not work without secret_key()
 app.secret_key = "#secret_key@2025"
-
-
+records = pd.read_excel('Records.xlsx')
 # create class for new account:
 class account:
     def __init__(self,id,first_name,last_name,username,password,email_address):
@@ -99,10 +87,10 @@ def homepage():
                         flask.session['username'] = username
                         return flask.redirect('/actions')
                     else:
-                        return get_html_text('index.html').replace('$replace$',"Wrong password. Try again.")
-            return get_html_text('index.html').replace('$replace$',"Wrong username. Try again.")
+                        return get_html_text('templates/index.html').replace('$replace$',"Wrong password. Try again.")
+            return get_html_text('templates/index.html').replace('$replace$',"Wrong username. Try again.")
 
-    return get_html_text('index.html').replace('$replace$',"")
+    return get_html_text('templates/index.html').replace('$replace$',"")
                     
         
 @app.route('/signup', methods=['GET', 'POST'])
@@ -113,24 +101,21 @@ def signup():
         email_address = flask.request.form["email_address"].lower()
         username = flask.request.form["username"].lower()
         password = flask.request.form["password"]
-        id = flask.request.form["id"]
 
         users = open_users_file("username.txt")
 
         for user in users:
-            if user['id'] == id:
-                return get_html_text("signup.html").replace('$replace$',"This ID already exists. Try again.")
             if user['username'] == username:
-                return get_html_text("signup.html").replace('$replace$',"This username is already taken. Try again.")
+                return get_html_text("templates/signup.html").replace('$replace$',"This username is already taken. Try again.")
             if user['email_address'] == email_address:
-                return get_html_text("signup.html").replace('$replace$',"This email is already registered. Try again.")
+                return get_html_text("templates/signup.html").replace('$replace$',"This email is already registered. Try again.")
 
         
 
         account(id,first_name,last_name,username,password,email_address).save_to_file()
-        return get_html_text("signup.html").replace('$replace$',"Account created successfully! <a href='/'>Go to login</a>")
+        return get_html_text("templates/signup.html").replace('$replace$',"Account created successfully! <a href='/'>Go to login</a>")
     
-    return get_html_text("signup.html").replace('$replace$',"")
+    return get_html_text("templates/signup.html").replace('$replace$',"")
 
 
 @app.route('/actions', methods=['GET', 'POST'])
@@ -143,24 +128,40 @@ def actions():
             return flask.redirect('/add_survey')
         elif 'show_survey' in flask.request.form:
             return flask.redirect('/show_survey')
+        elif 'update_survey' in flask.request.form:
+            return flask.redirect('/update_survey')
         
     return flask.render_template('actions.html')
 
 @app.route('/show_survey', methods = ["GET","POST"])
 def show_survey():
     if flask.request.method == "POST":
-        id = flask.request.form['id']
+        id = int(flask.request.form["id"])
         get_from_data = records[records['id'] == id]
         if get_from_data.empty:
-            return get_html_text('show_survey.html').replace('$replace$','No survey found for this ID.')
+            return get_html_text('templates/show_survey.html').replace('$replace$','No survey found for this ID.')
         else :
-            return get_html_text('show_survey.html').replace('$replace$', get_from_data.to_html(index=False))
+            return get_html_text('templates/show_survey.html').replace('$replace$', get_from_data.to_html(index=False))
         
-    return get_html_text('show_survey.html').replace('$replace$', '')
+    return get_html_text('templates/show_survey.html').replace('$replace$', '')
             
-@app.route('/update')
-def update():
-    return 'this page is for update'
+@app.route('/update_survey', methods = ['GET','POST'])
+def update_survey():
+    options = ''
+    for i in records.columns:
+        if i != 'id':
+            options+=f"<option value='{i}'>{i}</option>"
+    if flask.request.method == "POST":
+        id = int(flask.request.form['id'])
+        property = flask.request.form['property']
+        new_change = flask.request.form['new_change']
+        if records[records['id']==id].empty:
+            return get_html_text('templates/update.html').replace('$replace$',options).replace('$replace2$','No survey found for this ID.')
+        else:
+            records.loc[records[records['id'] == id].index,property] = new_change
+            records.to_excel('Records.xlsx')
+            return get_html_text('templates/update.html').replace('$replace$',options).replace('$replace2$',"This survey has been updated successfully! <a href='/show_survey'>Go check the update..</a>")
+    return get_html_text('templates/update.html').replace('$replace$',options).replace('$replace2$',"")
 
 @app.route('/add_survey')
 def add_survey():
