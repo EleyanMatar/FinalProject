@@ -1,3 +1,25 @@
+// These functions for put restrictions on add_survey inputs
+function isNumber(text){
+    if (isNaN(Number(text))){
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function isNineDigitNumber(text){
+    if (isNumber(text)){
+        if (text.length==9){
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+/////////////////////
+
 function isContainNumber(text){
     const numbers = ['0','1','2','3','4','5','6','7','8','9'];
     for (let i=0;i<text.length;i++) {
