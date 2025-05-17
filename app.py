@@ -73,6 +73,9 @@ def homepage():
 # method = GET and POST. GET because of requesting the homepage itself, POST to enter values for processing in backend
 # If statment is for check that the method used is post, that means we will enter new values and the web server will convey it for backend.
 # flask.request.method() to call the method type.
+    if 'username' in flask.session:
+        return flask.redirect('/actions') # check if username is still in session or not. if yes, then redirect immediately to actions route. Do not forget to add logout button to clear session
+    
     if flask.request.method == "POST":
         if "sign_up" in flask.request.form:
             return flask.redirect('/signup')
@@ -135,6 +138,9 @@ def actions():
 
 @app.route('/show_survey', methods = ["GET","POST"])
 def show_survey():
+    if "username" not in flask.session:
+        return flask.redirect('/')
+
     if flask.request.method == "POST":
         id = int(flask.request.form["id"])
         get_from_data = records[records['id'] == id]
@@ -151,6 +157,9 @@ def show_survey():
             
 @app.route('/update_survey', methods = ['GET','POST'])
 def update_survey():
+    if "username" not in flask.session:
+        return flask.redirect('/')
+
     options = ''
     for i in records.columns:
         if i != 'id':
@@ -169,6 +178,9 @@ def update_survey():
 
 @app.route('/add_survey', methods = ['GET','POST'])
 def add_survey():
+    if "username" not in flask.session:
+        return flask.redirect('/')
+
     global records # we want to assign new value and this value will override the old one. if i do not identify records as global, the function will create a new variable inside the function only.
     record_properties = ''
     for i in records.columns:
@@ -188,3 +200,8 @@ def add_survey():
             return get_html_text('templates/add_survey.html').replace('$replace$',record_properties).replace('$replace2$',"This ID already exists! <a href='/show_survey'>Go check it..</a>")
 
     return get_html_text('templates/add_survey.html').replace('$replace$',record_properties).replace('$replace2$',"")
+
+@app.route('/sign_out')
+def sign_out():
+    flask.session.clear()
+    return flask.redirect('/')
