@@ -9,10 +9,10 @@
     <h1>Add new survey</h1>
     <label for="sign_in">You still signed in, click sign out to leave </label>
     <a href="/sign_out">Sign Out</a>
-    <form action='/add_survey' method="post">
+    <form action='/add_survey' method="post" id="add_survey">
         $replace$
         <label for="submit">Click submit to add new survey</label><input type="submit" value="Submit">
     </form>  
-    <p>$replace2$</p>
+    <p id="message">$replace2$</p>
 </body>
 </html>
