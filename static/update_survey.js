@@ -60,14 +60,19 @@ document.getElementById('submit').addEventListener('submit',function(event) {
     if (!isNineDigitNumber(id)){
         event.preventDefault();
         document.getElementById('message').innerHTML = " ID should be nine digit numbers";
-    } else {
-        if (propertyNames.includes(property)){
-            if (isContainNumber(new_change) || isEmpty(new_change) || isContainSymbol(new_change)) {
+        return;
+    }
+    if (propertyNames.includes(property)){
+        if (isContainNumber(new_change) || isEmpty(new_change) || isContainSymbol(new_change)) {
             event.preventDefault();
-            document.getElementById('message').innerHTML = property + " is invalid:<br>1- Must not be empty.<br>2- Must not contain numbers.<br>3- Must not contain symbols.";  
+            document.getElementById('message').innerHTML = property + " is invalid:<br>1- Must not be empty.<br>2- Must not contain numbers.<br>3- Must not contain symbols.";
+            return;  
     }} else {
         if (!isNumber(new_change) || isEmpty(new_change)) {
             event.preventDefault();
             document.getElementById('message').innerHTML = property + " is invalid:<br>1- Must not be empty.<br>2- Must be number.";
+            return;
         }
-    }}})
+    }
+localStorage.setItem('logInUser','Update old survey');
+});

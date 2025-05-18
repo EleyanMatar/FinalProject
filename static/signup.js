@@ -53,6 +53,8 @@ document.getElementById('sign_up').addEventListener('submit',function(event) {
     }else if (isEmpty(email_address) || !email_address.includes('@') || !email_address.includes('.')) {
         event.preventDefault();
         document.getElementById('message').innerHTML = "email address should:<br>1- not be empty.<br>2- contain '@' and '.'";
+    } else {
+        localStorage.setItem('logInUser','Registered');
     }
 })
 

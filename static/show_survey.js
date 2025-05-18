@@ -23,4 +23,9 @@ document.getElementById('show_survey').addEventListener('submit', function (even
     if (!isNineDigitNumber(id)){
         event.preventDefault();
         document.getElementById('message').innerHTML = " ID should be nine digit numbers";
-    }})
+    } else {
+        localStorage.setItem('logInUser','Displayed old survey');
+    }
+    
+})
+    

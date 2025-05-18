@@ -79,8 +79,8 @@ document.getElementById('add_survey').addEventListener('submit',function(event) 
         event.preventDefault();
         document.getElementById('message').innerHTML = " ID should be nine digit numbers";
         return;
-    } else {
-        for (let i = 0; i < propertyListNumbers.length; i++) {
+    }
+    for (let i = 0; i < propertyListNumbers.length; i++) {
         if (!isNumber(propertyListNumbers[i]) || isEmpty(propertyListNumbers[i])) {
             event.preventDefault();
             document.getElementById('message').innerHTML = propertyNamesNumbers[i] + " is invalid:<br>1- Must not be empty.<br>2- Must be number.";
@@ -94,6 +94,5 @@ document.getElementById('add_survey').addEventListener('submit',function(event) 
             break;
         }
     }
-    }
-    }
-)
+    localStorage.setItem('logInUser','Added new survey');
+    })
