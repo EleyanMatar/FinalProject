@@ -6,8 +6,7 @@ app.secret_key = "#secret_key@2025"
 records = pd.read_excel('Records.xlsx',index_col=0)
 # create class for new account:
 class account:
-    def __init__(self,id,first_name,last_name,username,password,email_address):
-        self.id = id
+    def __init__(self,first_name,last_name,username,password,email_address):
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
@@ -21,7 +20,7 @@ class account:
         self.password = new_password
 
     def to_text(self):
-        return f"{self.id}:{self.first_name}:{self.last_name}:{self.username}:{self.password}:{self.email_address}"
+        return f"{self.first_name}:{self.last_name}:{self.username}:{self.password}:{self.email_address}"
 
     def save_to_file(self, file_name='username.txt'):
         with open(file_name, 'a') as file:
@@ -55,14 +54,13 @@ def open_users_file(file_name='username.txt'):
     lines = read_split_text_to_list(file_name)
     for line in lines:
         parts = line.strip().split(":")
-        if len(parts) == 6:
+        if len(parts) == 5:
             user = {
-                "id": parts[0],
-                "first_name": parts[1],
-                "last_name": parts[2],
-                "username": parts[3],
-                "password": parts[4],
-                "email_address": parts[5]
+                "first_name": parts[0],
+                "last_name": parts[1],
+                "username": parts[2],
+                "password": parts[3],
+                "email_address": parts[4]
             }
             users.append(user)
     return users
@@ -115,7 +113,7 @@ def signup():
 
         
 
-        account(id,first_name,last_name,username,password,email_address).save_to_file()
+        account(first_name,last_name,username,password,email_address).save_to_file()
         return get_html_text("templates/signup.html").replace('$replace$',"Account created successfully! <a href='/'>Go to login</a>")
     
     return get_html_text("templates/signup.html").replace('$replace$',"")
@@ -182,9 +180,6 @@ def add_survey():
         return flask.redirect('/')
 
     global records # we want to assign new value and this value will override the old one. if i do not identify records as global, the function will create a new variable inside the function only.
-    record_properties = ''
-    for i in records.columns:
-        record_properties+=f'<label for="{i}">{i}: </label><input type="text" name="{i}" placeholder="Enter value.."><br><br>'
     if flask.request.method == "POST":
         new_record = {}
         for i in records.columns:
@@ -195,11 +190,11 @@ def add_survey():
             new_record = pd.DataFrame([new_record])
             records = pd.concat([records, new_record],ignore_index=True)
             records.to_excel('Records.xlsx')
-            return get_html_text('templates/add_survey.html').replace('$replace$',record_properties).replace('$replace2$',"The survey has been added successfully! <a href='/show_survey'>Go check it..</a>")
+            return get_html_text('templates/add_survey.html').replace('$replace2$',"The survey has been added successfully! <a href='/show_survey'>Go check it..</a>")
         else:
-            return get_html_text('templates/add_survey.html').replace('$replace$',record_properties).replace('$replace2$',"This ID already exists! <a href='/show_survey'>Go check it..</a>")
+            return get_html_text('templates/add_survey.html').replace('$replace2$',"This ID already exists! <a href='/show_survey'>Go check it..</a>")
 
-    return get_html_text('templates/add_survey.html').replace('$replace$',record_properties).replace('$replace2$',"")
+    return get_html_text('templates/add_survey.html').replace('$replace2$',"")
 
 @app.route('/sign_out')
 def sign_out():

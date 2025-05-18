@@ -8,7 +8,7 @@
 <body>
     <label for="sign_in">You still signed in, click sign out to leave </label>
     <a href="/sign_out">Sign Out</a>
-    <form action="/update_survey" method="post">
+    <form action="/update_survey" method="post" id="submit">
         <label for="id">Enter your ID:</label>
         <input type="text" name="id" placeholder="Enter ID..">
         <label for="properties">Choose a property:</label>
@@ -17,10 +17,9 @@
         </select>
         <label for="new_value">Change it to:</label>
         <input type="text" name="new_change" placeholder  ="Enter new value...">
-        <input type="submit" value="Change">
-        <div>
-            $replace2$
-        </div>
+        <input type="submit" value="Change" id="submit">
+        <p id="message">$replace2$</p>
+        <script src="static/update_survey.js"></script>
 
     </form>
 </body>

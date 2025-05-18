@@ -8,11 +8,30 @@
 <body>
     <h1>Add new survey</h1>
     <label for="sign_in">You still signed in, click sign out to leave </label>
-    <a href="/sign_out">Sign Out</a>
+    <a href="/sign_out">Sign Out</a><br><br>
     <form action='/add_survey' method="post" id="add_survey">
-        $replace$
-        <label for="submit">Click submit to add new survey</label><input type="submit" value="Submit">
+        <label for="id">id: </label><input type="text" name="id" placeholder="Enter value.."><br><br>
+        <label for="city">city: </label><input type="text" name="city" placeholder="Enter value.."><br><br>
+        <label for="municipality">municipality: </label><input type="text" name="municipality" placeholder="Enter value.."><br><br>
+        <label for="neighborhood">neighborhood: </label><input type="text" name="neighborhood" placeholder="Enter value.."><br><br>
+        <label for="street">street: </label><input type="text" name="street" placeholder="Enter value.."><br><br>
+        <label for="building_status">building_status: </label><input type="text" name="building_status" placeholder="Enter value.."><br><br>
+        <label for="building_use">building_use: </label><input type="text" name="building_use" placeholder="Enter value.."><br><br>
+        <label for="current_place_of_residence">current_place_of_residence: </label><input type="text" name="current_place_of_residence" placeholder="Enter value.."><br><br>
+        <label for="land_number">land_number: </label><input type="text" name="land_number" placeholder="Enter value.."><br><br>
+        <label for="distination_number">distination_number: </label><input type="text" name="distination_number" placeholder="Enter value.."><br><br>
+        <label for="number_of_floors">number_of_floors: </label><input type="text" name="number_of_floors" placeholder="Enter value.."><br><br>
+        <label for="number_of_units">number_of_units: </label><input type="text" name="number_of_units" placeholder="Enter value.."><br><br>
+        <label for="floor_number">floor_number: </label><input type="text" name="floor_number" placeholder="Enter value.."><br><br>
+        <label for="unit_number">unit_number: </label><input type="text" name="unit_number" placeholder="Enter value.."><br><br>
+        <label for="family_member">family_member: </label><input type="text" name="family_member" placeholder="Enter value.."><br><br>
+        <label for="unit_area">unit_area: </label><input type="text" name="unit_area" placeholder="Enter value.."><br><br>
+        <label for="number_of_rooms">number_of_rooms: </label><input type="text" name="number_of_rooms" placeholder="Enter value.."><br><br>
+        <label for="building_number">building_number: </label><input type="text" name="building_number" placeholder="Enter value.."><br><br>
+
+        <label for="submit">Click submit to add new survey  </label><input type="submit" value="Submit">
     </form>  
     <p id="message">$replace2$</p>
+    <script src="static/add_survey.js"></script>
 </body>
 </html>
