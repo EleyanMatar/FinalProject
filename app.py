@@ -114,7 +114,7 @@ def signup():
         
 
         account(first_name,last_name,username,password,email_address).save_to_file()
-        return get_html_text("templates/signup.html").replace('$replace$',"Account created successfully! <a href='/'>Go to login</a>")
+        return get_html_text("templates/signup.html").replace('$replace$',"Account created successfully! <a href='/'><strong>Go to login</strong></a>")
     
     return get_html_text("templates/signup.html").replace('$replace$',"")
 

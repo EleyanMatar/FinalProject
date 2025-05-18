@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Surveying War Destruction</title>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-    <p>This is a home page of the web app, make a brief about the project and what it offers</p>
-    <p>Sign in, two textbox will appear to sign in</p>
-    <form action="/" method="POST" id="sign_in">
-        <input type="text" name="username" id="username" placeholder="enter username...">
-        <input type="text" name="password" id="password" placeholder="enter password...">
-        <input type="submit" value="Sign in" name="sign_in">
-        <input type="submit" value="Sign up" name="sign_up">
-    </form>
-    <p id="message">$replace$</p>
+    <div class="block">
+        <h1>Surveying War Destruction</h1>
+        <p class="content">This web application allows users to report and update information about buildings affected by war.</p>
+        <p class="content">It helps document the extent of destruction to support future recovery and humanitarian efforts.</p><br><br>
+        <p><strong class="note">Sign in to add, display, update, and delete surveys.</strong></p>
+        <form action="/" method="POST" id="sign_in">
+            <input type="text" name="username" id="username" placeholder="enter username..." class="text">
+            <input type="text" name="password" id="password" placeholder="enter password..." class="text">
+            <input type="submit" value="Sign in" name="sign_in" class="button">
+            <input type="submit" value="Sign up" name="sign_up" class="button">
+        </form>
+        <p id="message">$replace$</p>
+    </div>
+
     <script src="static/homepage.js"></script>
-    
 </body>
 </html>

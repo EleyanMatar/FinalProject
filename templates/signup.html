@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sign up</title>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-    <h1>Sign up</h1>
-    <p>This page for sign up new user in this web app</p>
-    <form action="/signup" method="post" id="sign_up">
-        <input type="text" name="first_name" placeholder="Enter your first name">
-        <input type="text" name="last_name" placeholder="Enter your last name">
-        <input type="text" name="username" placeholder="Enter username">
-        <input type="text" name="password" placeholder="Enter password">
-        <input type="text" name="email_address" placeholder="Enter your email address">
-        <input type="submit" value="Sign up">
+    <div class="block">
+        <h1>Sign up</h1>
+        <p class="note">To create a new account, please fill in the form below.</p>
+        <form action="/signup" method="post" id="sign_up">
+            <input type="text" name="first_name" placeholder="Enter your first name" class="text">
+            <input type="text" name="last_name" placeholder="Enter your last name" class="text">
+            <input type="text" name="username" placeholder="Enter username" class="text">
+            <input type="text" name="password" placeholder="Enter password" class="text">
+            <input type="text" name="email_address" placeholder="Enter your email address" class="text">
+            <input type="submit" value="Sign up" class="button">
+        </form>
         <p id="message">$replace$</p>
-        <script src="static/signup.js"></script>
-
-    </form>
-    
+    </div>
+    <script src="static/signup.js"></script>
 </body>
 </html>

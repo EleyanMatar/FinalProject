@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Actions</title>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-    <h1>Read, update, add, delete a suvey</h1>
-    <label for="sign_in">You still signed in, click sign out to leave </label>
-    <a href="/sign_out">Sign Out</a>
-    <form action="/actions" method="post">
-        <input type="Submit" name="add_survey" value="Add New Survey">
-        <input type="Submit" name="show_survey" value="Show Old Surveys">
-        <input type="Submit" name="update_survey" value="Update Old Surveys">
-    </form>
+    <div class="block">
+        <h1>Add, read, update, and delete a survey.</h1>
+        <form action="/actions" method="post">
+            <input type="Submit" name="add_survey" value="Add New Survey" class="button">
+            <input type="Submit" name="show_survey" value="Show or Delete Old Surveys" class="button">
+            <input type="Submit" name="update_survey" value="Update Old Surveys" class="button"><br><br>
+            <label for="sign_in" class="note">You are currently signed in. Click 'Sign out' to exit your account.</label>
+            <a href="/sign_out"><strong>Sign Out</strong></a>
+        </form>
+    </div>
+
 </body>
 </html>
