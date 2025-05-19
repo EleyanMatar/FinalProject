@@ -4,23 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-    <label for="sign_in">You still signed in, click sign out to leave </label>
-    <a href="/sign_out">Sign Out</a>
-    <form action="/update_survey" method="post" id="submit">
-        <label for="id">Enter your ID:</label>
-        <input type="text" name="id" placeholder="Enter ID..">
-        <label for="properties">Choose a property:</label>
-        <select name="property">
-            $replace$
-        </select>
-        <label for="new_value">Change it to:</label>
-        <input type="text" name="new_change" placeholder  ="Enter new value...">
-        <input type="submit" value="Change" id="submit">
-        <p id="message">$replace2$</p>
-        <script src="static/update_survey.js"></script>
+    <div class="block">
+        <h1>Update old survey</h1>
+        <form action="/update_survey" method="post" id="submit">
+            <label for="id">Enter your ID:</label>
+            <input type="text" name="id" placeholder="Enter ID.." class="text">
+            <label for="properties">Choose a property:</label>
+            <select name="property">
+                $replace$
+            </select>
+            <br><label for="new_value">Change it to:</label>
+            <input type="text" name="new_change" placeholder  ="Enter new value..." class="text">
+            <input type="submit" value="Change" id="submit" class="button">
+            <p id="message">$replace2$</p>
+            <label for="sign_in" class="note">You are currently signed in. Click 'Sign out' to exit your account.</label>
+            <a href="/sign_out"><strong>Sign Out</strong></a>
+        </form>
+    </div>
 
-    </form>
+        <script src="static/update_survey.js"></script>
 </body>
 </html>
