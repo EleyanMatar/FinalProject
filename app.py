@@ -146,7 +146,13 @@ def show_survey():
             if get_from_data.empty:
                 return get_html_text('templates/show_survey.html').replace('$replace$','No survey found for this ID.')
             else :
-                return get_html_text('templates/show_survey.html').replace('$replace$', get_from_data.to_html(index=False))
+                # Convert this record to dictionary and then using loop create a html.
+                convert_record_to_html = ''
+                for i in get_from_data.to_dict(orient='records'):
+                    for key, value in i.items():
+                        convert_record_to_html+= f'<span class="jkey">{key} :</span><span class="jvalue">{value}</span><br>'
+                ###### I will apply changes on next line:  get_from_data.to_html(index=False) replace with convert_record_to_html
+                return get_html_text('templates/show_survey.html').replace('$replace$', convert_record_to_html)
         elif 'delete' in flask.request.form:
             records.drop(index=get_from_data.index,inplace=True)
             records.to_excel('Records.xlsx')

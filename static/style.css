@@ -73,3 +73,29 @@ h1,.content{
     height: 15px;
 
 }
+table {
+    
+}
+.log-out-link {
+    color: burlywood;
+}
+.jkey {
+  font-weight: bold;
+  color: white;
+  margin-right: 12px;
+  margin-bottom: 8px;
+}
+.jvalue {
+  color: #34495e;
+  background-color: #ecf0f1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+span {
+  display: inline-block;
+}
+
+br {
+  margin-bottom: 8px;
+}
