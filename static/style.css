@@ -1,9 +1,10 @@
 body {
+    zoom: 0.75;
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     color: #fff;
-    height: 100vh;
+    height: 140vh;
     background-image: url('https://www.btselem.org/sites/default/files/styles/1200x440/public/2023-10/a_rimal_top.jpg?h=f0551bc4');
     background-size: cover;
     background-position: center;
@@ -17,6 +18,7 @@ h1,.content{
 }
 
 .block,.block2 {
+    
     background-color: rgba(0, 0, 0, 0.6);
     padding: 30px;
     border-radius: 10px;
