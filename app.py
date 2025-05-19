@@ -1,5 +1,6 @@
 import flask 
 import pandas as pd
+import os
 app = flask.Flask('Surveying')
 # flask.session will not work without secret_key()
 app.secret_key = "#secret_key@2025"
@@ -23,6 +24,9 @@ class account:
         return f"{self.first_name}:{self.last_name}:{self.username}:{self.password}:{self.email_address}"
 
     def save_to_file(self, file_name='username.txt'):
+        folder = os.path.dirname(file_name)
+        if folder and not os.path.exists(folder):
+            os.makedirs(folder)
         with open(file_name, 'a') as file:
             file.write(self.to_text() + '\n')
 
@@ -73,7 +77,7 @@ def homepage():
 # flask.request.method() to call the method type.
     if 'username' in flask.session:
         return flask.redirect('/actions') # check if username is still in session or not. if yes, then redirect immediately to actions route. Do not forget to add logout button to clear session
-    
+    # redirect if the user does not sign in
     if flask.request.method == "POST":
         if "sign_up" in flask.request.form:
             return flask.redirect('/signup')
@@ -206,3 +210,8 @@ def add_survey():
 def sign_out():
     flask.session.clear()
     return flask.redirect('/')
+
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+    return response
