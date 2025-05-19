@@ -181,7 +181,7 @@ def update_survey():
         else:
             records.loc[records[records['id'] == id].index,property] = new_change
             records.to_excel('Records.xlsx')
-            return get_html_text('templates/update.html').replace('$replace$',options).replace('$replace2$',"The survey has been updated successfully! <a href='/show_survey'>Go check the update..</a>")
+            return get_html_text('templates/update.html').replace('$replace$',options).replace('$replace2$',"The survey has been updated successfully! <a href='/show_survey'><strong class=\"log-out-link\">Go check the update..</strong></a>")
     return get_html_text('templates/update.html').replace('$replace$',options).replace('$replace2$',"")
 
 @app.route('/add_survey', methods = ['GET','POST'])
@@ -200,9 +200,9 @@ def add_survey():
             new_record = pd.DataFrame([new_record])
             records = pd.concat([records, new_record],ignore_index=True)
             records.to_excel('Records.xlsx')
-            return get_html_text('templates/add_survey.html').replace('$replace2$',"The survey has been added successfully! <a href='/show_survey'>Go check it..</a>")
+            return get_html_text('templates/add_survey.html').replace('$replace2$',"The survey has been added successfully! <a href='/show_survey'><strong class=\"log-out-link\">Go check it..</strong></a>")
         else:
-            return get_html_text('templates/add_survey.html').replace('$replace2$',"This ID already exists! <a href='/show_survey'>Go check it..</a>")
+            return get_html_text('templates/add_survey.html').replace('$replace2$',"This ID already exists! <a href='/show_survey'><strong class=\"log-out-link\">Go check it..</strong></a>")
 
     return get_html_text('templates/add_survey.html').replace('$replace2$',"")
 
